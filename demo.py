@@ -3,6 +3,7 @@ from tools import Character_knowledge_Tool, Actor_knowledge_Tool
 from model import LLMs
 from agent import IntentAgent
 import argparse
+from langchain.memory import ConversationBufferMemory
 
 # 创建 ArgumentParser 对象
 parser = argparse.ArgumentParser(description='启动参数配置')
@@ -18,6 +19,8 @@ tools = [Character_knowledge_Tool(llm=llm), Actor_knowledge_Tool(llm=llm)]
 
 agent = IntentAgent(tools=tools, llm=llm)
 # result = agent.choose_tools("游戏角色马里奥是谁？")
-agent_exec = AgentExecutor.from_agent_and_tools(agent=agent, tools=tools, verbose=True, max_iterations=1)
+memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+agent_exec = AgentExecutor.from_agent_and_tools(agent=agent, tools=tools, verbose=True, max_iterations=1,
+                                                memory=memory)
 print('query: ', "游戏角色马里奥是谁？")
 response = agent_exec.run("游戏角色马里奥是谁？")

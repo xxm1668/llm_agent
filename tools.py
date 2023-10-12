@@ -13,6 +13,7 @@ class functional_Tool(BaseTool):
     name: str = ""
     description: str = ""
     url: str = ""
+    return_direct: bool = True
 
     def _call_func(self, query):
         raise NotImplementedError("subclass needs to overwrite this method")
@@ -38,6 +39,7 @@ class Character_knowledge_Tool(functional_Tool):
     # tool description
     name = "游戏角色信息查询"
     description = "存有一些角色和信息的工具，输入应该是对游戏角色的询问"
+    return_direct = False
 
     # QA params
     context = "已知游戏角色信息：  Mario: 马里奥是日本电子游戏设计师宫本茂创作的一个角色。他是同名电子游戏系列的主角，也是日本电子游戏公司任天堂的吉祥物。Princess Peach: 碧姬公主，是任天堂著名游戏系列马里奥系列中的重要角色。她是游戏中虚构的蘑菇王国的公主，也是王国的统治者。"
@@ -67,7 +69,7 @@ class Actor_knowledge_Tool(functional_Tool):
     # tool description
     name = "演员信息查询"
     description = "存有一些演员的工具，输入应该是对演员的询问"
-
+    return_direct = False
     # QA params
     qa_template = """
     请根据下面带```分隔符的文本来回答问题。
