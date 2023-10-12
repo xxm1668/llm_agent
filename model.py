@@ -6,10 +6,9 @@ from transformers import AutoModel, AutoTokenizer
 from typing import List, Optional, Mapping, Any
 
 
-### chatglm-6B llm ###
-class ChatGLM(LLM):
+class LLMs(LLM):
     model_path: str
-    max_length: int = 2048
+    max_length: int = 1024
     temperature: float = 0.1
     top_p: float = 0.7
     history: List = []
@@ -87,10 +86,9 @@ class ChatGLM(LLM):
         if self.model is not None or self.tokenizer is not None:
             return
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_path, trust_remote_code=True)
-        self.model = AutoModel.from_pretrained(self.model_path, trust_remote_code=True).quantize(8).half().cuda().eval()
+        self.model = AutoModel.from_pretrained(self.model_path, trust_remote_code=True).half().cuda().eval()
 
     def set_params(self, **kwargs):
         for k, v in kwargs.items():
             if k in self._identifying_params:
                 self.k = v
-
