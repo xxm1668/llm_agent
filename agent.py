@@ -13,11 +13,29 @@ class IntentAgent(BaseSingleActionAgent):
     回复的意图类别必须在提供的类别中，并且必须按格式回复：“意图类别：<>”。
 
     举例：
-    问题：什么是游戏角色皮卡丘？
-    意图类别：游戏角色信息查询
-
-    问题：什么是演员刘德华？
-    意图类别：演员信息查询
+    问题：龙湖天下在哪？
+    意图类别：新房信息问答
+    
+    问题：龙湖天下单价是多少？
+    意图类别：新房信息问答
+    
+    问题：龙湖天下小区物业是？
+    意图类别：新房信息问答
+    
+    问题：龙湖天下小区物业费多少？
+    意图类别：新房信息问答
+    
+    问题：龙湖天下有哪些户型？
+    意图类别：新房信息问答
+    
+    问题：预算300万，在南京买房有哪些推荐？
+    意图类别：房地产复杂问题问答
+    
+    问题：同等预算，紫樾府和江悦润府怎么选？
+    意图类别：房地产复杂问题问答
+    
+    问题：地铁1号线有哪些新房推荐？
+    意图类别：房地产复杂问题问答
 
     问题：“{query}”
     """
@@ -51,3 +69,4 @@ class IntentAgent(BaseSingleActionAgent):
             self, intermediate_steps: List[Tuple[AgentAction, str]], **kwargs: Any
     ) -> Union[List[AgentAction], AgentFinish]:
         raise NotImplementedError("IntentAgent does not support async")
+

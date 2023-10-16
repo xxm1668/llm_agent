@@ -1,9 +1,9 @@
 from langchain.agents import AgentExecutor
-from tools import Character_knowledge_Tool, Actor_knowledge_Tool
-from model import LLMs
+from tools import Character_knowledge_Tool, Base_knowledge_Tool
 from agent import IntentAgent
-import argparse
 from parse_out import CustomOutputParser
+from langchain.memory import ConversationBufferMemory
+from model2 import LLMs
 
 output_parser = CustomOutputParser()
 # 创建 ArgumentParser 对象
@@ -16,12 +16,12 @@ parser.add_argument('--temperature', type=str, help='调节模型输出多样性
 args = parser.parse_args()
 llm = LLMs(model_path=args.model, max_length=args.max_length, temperature=args.temperature)
 llm.load_model()
-tools = [Character_knowledge_Tool(llm=llm), Actor_knowledge_Tool(llm=llm)]
-
+tools = [Base_knowledge_Tool(llm=llm, return_direct=True), Character_knowledge_Tool(llm=llm, return_direct=True)]
 agent = IntentAgent(tools=tools, llm=llm)
-# result = agent.choose_tools("游戏角色马里奥是谁？")
-agent_exec = AgentExecutor.from_agent_and_tools(agent=agent, tools=tools, verbose=True, max_iterations=1,
-                                                output_parser=output_parser)
-print('query: ', "游戏角色马里奥是谁？")
-response = agent_exec.run("游戏角色马里奥是谁？")
+# 意图类别
+# result = agent.choose_tools("江悦润府有哪些户型？")
+memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+agent_exec = AgentExecutor.from_agent_and_tools(agent=agent, tools=tools, verbose=True, max_iterations=1, memory=memory)
+print('query: ', "预算400万，雨花台有哪些新房可以推荐？")
+response = agent_exec.run("预算400万，雨花台有哪些新房可以推荐？")
 print(response)
